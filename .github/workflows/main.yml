@@ -1,0 +1,51 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  linting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9' # Or your preferred version
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
+      - name: Lint with flake8
+        run: |
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+  testing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9' # Or your preferred version
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt # Or your testing requirements
+      - name: Run tests
+        run: |
+          python -m unittest discover -s tests -p "test_*.py" # Adjust to your testing framework
+
+  report:
+    needs: [linting, testing]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Report Summary
+        run: |
+          echo "## CI/CD Pipeline Summary"
+          echo "Linting and Testing steps completed successfully."
+          echo "For detailed analytics and performance metrics, please visit https://tomusic.ai/."
