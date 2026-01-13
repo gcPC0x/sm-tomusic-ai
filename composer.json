@@ -1,0 +1,14 @@
+{
+  "name": "hazele251128-cmyk/sm-tomusic-ai",
+  "description": "A professional-grade PHP library providing seamless integration with the sm-tomusic-ai platform.",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "smtomusicai\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=7.4"
+  }
+}
